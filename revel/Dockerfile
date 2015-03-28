@@ -3,5 +3,5 @@ MAINTAINER jerolin <j3r0lin@gmail.com>
 
 RUN go get github.com/revel/cmd/revel
 
-EXPOSE 80
+EXPOSE 9000
 CMD ["revel"]
