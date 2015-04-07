@@ -1,0 +1,73 @@
+mongodb:
+  image: tutum/mongodb
+  ports:
+    - "27017:27017"
+    - "28017:28017"
+  volumes:
+    - /data/mongodb:/data/db
+  environment:
+    - MONGODB_PASS=chenjian
+  hostname: mongodb
+  restart: always
+
+config:
+  image: tutum/mongodb
+  volumes:
+    - ../rainbow/config/config.js:/config.js
+  working_dir: /
+  links:
+    - mongodb:mongodb
+  command: mongo admin --host mongodb -u admin -p chenjian config.js
+
+rabbitmq:
+  image: tutum/rabbitmq
+  ports:
+    - "15672:15672"
+    - "5672:5672"
+  environment:
+    - RABBITMQ_PASS=chenjian
+  hostname: rabbitmq
+  restart: always
+
+nginx:
+  image: tutum/nginx
+  ports:
+    - "80:80"
+  volumes:
+    - ../rainbow-ui:/usr/share/nginx/html/rainbow-ui
+    - ../rainbow-cms:/usr/share/nginx/html/rainbow-cms
+    - ./nginx.conf:/etc/nginx/sites-enabled/default
+  # links:
+  #   - "cms:cms"
+  hostname: nginx
+  restart: always
+
+oauth2:
+  image: tutum/tomcat
+  volumes:
+    - "../rainbow/oauth2/target/oauth2.war:/tomcat/webapps/oauth2.war"
+  links:
+    - "mongodb:mongodb.networks.com"
+    - "rabbitmq:rabbitmq"
+  hostname: oauth2
+  restart: always
+
+# mysql:
+#   image: tutum/mysql
+#   ports:
+#     - "3306:3306"
+#   volumes:
+#     - /data/mysql:/var/lib/mysql
+#   environment:
+#     - MYSQL_PASS=chenjian
+#   hostname: mysql
+#   restart: always
+
+# cms:
+#   build: .
+#   volumes:
+#     - ../rainbow/rainbow-cms:/usr/share/nginx/html/rainbow-cms
+#   restart: always
+#   user: "root"
+  # links:
+  #   - "mysql:mysql"
