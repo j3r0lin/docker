@@ -3,7 +3,6 @@ MAINTAINER jerolin <j3r0lin@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ADD sources.list /etc/apt/sources.list
 RUN apt-get update && \
 	apt-get -y install \
 		php5-mongo \
