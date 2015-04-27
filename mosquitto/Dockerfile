@@ -4,7 +4,7 @@ MAINTAINER jerolin <j3r0lin@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /opt/
 RUN apt-get update && \
-	apt-get -y install python-software-properties && \
+	apt-get -y install software-properties-common python-software-properties && \
 	apt-add-repository ppa:mosquitto-dev/mosquitto-ppa && \
 	apt-get update && \
     apt-get -y install mosquitto && \
